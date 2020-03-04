@@ -12,7 +12,7 @@ public class Game2ThreadPool
 	public static void main(String[] args) throws InterruptedException, ExecutionException
 	{
 
-		int size = 1000; 
+		int size = 10000; 
 		
 		long time = System.nanoTime();
 		

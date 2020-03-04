@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Random;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -9,10 +10,12 @@ class Player implements Comparable<Player>
 	private int playerNum;
 	private int playerChoice;
 	private int playerResult;
+	HashMap<Player, Integer> winMap;
 	
 	Player(int playerNum)
 	{
 		this.playerNum = playerNum;
+		winMap = new HashMap<Player, Integer>();
 	}
 	
 	@Override
@@ -23,6 +26,36 @@ class Player implements Comparable<Player>
 			return -1;
 		else
 			return 1;
+	}
+	public boolean hasPlayed(Player player)
+	{
+		 return winMap.containsKey(player);
+	}
+	public void tiedTo(Player player)
+	{
+		if(!this.hasPlayed(player)) 
+		{
+			winMap.put(player, 0);
+			player.tiedTo(this);
+		}
+	}
+	public void wonTo(Player player)
+	{
+		if(!this.hasPlayed(player)) 
+		{
+			this.incrementResult();
+			winMap.put(player, 1);
+			player.lostTo(this);
+		}
+	}
+	public void lostTo(Player player)
+	{
+		if(!this.hasPlayed(player)) 
+		{
+			this.decrementResult();
+			winMap.put(player, -1);
+			player.wonTo(this);
+		}
 	}
 	
 	public void incrementResult() {
